@@ -14,7 +14,7 @@ const DECLINED = "declined";
 const NO_ROWS_ERROR_MSG = "Query did not retrieve any rows.";
 const USER_NOT_FOUND = "User not found";
 
-isolated service / on new http:Listener(9090) {
+isolated service / on new http:Listener(9091) {
     private final postgresql:Client dbClient;
 
     public isolated function init() returns error? {
@@ -23,6 +23,7 @@ isolated service / on new http:Listener(9090) {
     }
 
     isolated resource function get identitycheck(string userId) returns error? {
+        log:printInfo("Identity check initiated.", userId = userId);
         string|error user = getUser(userId, self.dbClient);
         if user == userId {
             _ = check updateValidation(userId, self.dbClient);
